@@ -164,6 +164,18 @@ namespace SummerPractice3
             {
                 SuppliersDataTableRefresh();
             }
+            if (header == "Банки")
+            {
+                BanksDataTableRefresh();
+            }
+            if (header == "Материалы")
+            {
+                MaterialsDataTableRefresh();
+            }
+            if (header == "Прочее")
+            {
+                MeasurementUnitsDataTableRefresh();
+            }
         }
         public void OrdersDataTableRefreshold()
         {
@@ -203,32 +215,267 @@ namespace SummerPractice3
                     };
                     res.Add(tableItem);
                 }
-                //label1.Content = suppliers[0].Name;
-                //ordersGrid.ItemsSource = res;
                 mainGrid.ItemsSource = res;
-                //ordersGrid.Columns[0].Visibility = Visibility.Collapsed;
             }
         }
         public void SuppliersDataTableRefresh()
         {
             using (MainDbContext db = new MainDbContext())
             {
-
                 var list = db.MaterialSuppliers.ToList();
-                //var res = new ObservableCollection<StorageUnit>();
-                //foreach (var item in list)
-                //{
-                //    res.Add(item);
-                //}
-                //label1.Content = suppliers[0].Name;
-                //suppliersGrid.ItemsSource = list;
-                mainGrid.ItemsSource = list;
-                //suppliersGrid.Columns[0].Visibility = Visibility.Collapsed;
+                var res = new ObservableCollection<SupplierEnchanced>();
+                foreach (var item in list)
+                {
+                    var tableItem = new SupplierEnchanced()
+                    {
+                        Id = item.Id,
+                        BankAccount = item.BankAccount,
+                        BankName = db.Banks.First(x => x.Id == item.BankId).Name,
+                        BusinessAddress = item.BusinessAddress,
+                        Code = item.Code,
+                        INN = item.INN,
+                        Name = item.Name
+                    };
+                    res.Add(tableItem);
+                }
+                mainGrid.ItemsSource = res;
             }
         }
 
+        private void supplierCleanButton_Click(object sender, RoutedEventArgs e)
+        {
+            supplierAddressTextBox.Text = "";
+            supplierBankAccountTextBox.Text = "";
+            supplierBankName.Text = "";
+            supplierCodeTextBox.Text = "";
+            supplierINNTextBox.Text = "";
+            supplierNameTextBox.Text = "";
+        }
 
+        private void supplierDeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (mainGrid.SelectedIndex >= 0)
+            {
+                var selectedItem = (SupplierEnchanced)mainGrid.SelectedItem;
+                using (MainDbContext db = new MainDbContext())
+                {
+                    db.Remove(db.MaterialSuppliers.First(x => x.Id == selectedItem.Id));
+                    db.SaveChanges();
+                    SuppliersDataTableRefresh();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Вы не выбрали элемент");
+            }
+        }
 
+        private void supplierModifyButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void supplierAddButton_Click(object sender, RoutedEventArgs e)
+        {
+            using (MainDbContext db = new MainDbContext())
+            {
+                try
+                {
+                    var materialSupplier = new MaterialSupplier();
+                    //if (isOrderEditing)
+                    //storageUnit.Id = orderEditingId;
+                    materialSupplier.Code = int.Parse(supplierCodeTextBox.Text);
+                    materialSupplier.Name=supplierNameTextBox.Text;
+                    materialSupplier.BusinessAddress=supplierAddressTextBox.Text;
+                    materialSupplier.BankAccount = ulong.Parse(supplierBankAccountTextBox.Text);
+                    materialSupplier.INN=ulong.Parse(supplierINNTextBox.Text);
+                    materialSupplier.BankId = db.Banks.First(x => x.Name == supplierBankName.Text).Id;
+                    //if (isOrderEditing)
+                    //{
+                    //    db.StorageUnits.Update(materialSupplier);
+                    //    isOrderEditing = false;
+                    //}
+                    //else
+                        db.Add(materialSupplier);
+                    db.SaveChanges();
+                    SuppliersDataTableRefresh();
+                }
+                catch
+                {
+                    MessageBox.Show("Не удалось добавить элемент!");
+                }
+            }
+        }
+
+        private void banksAddButton_Click(object sender, RoutedEventArgs e)
+        {
+            using (MainDbContext db = new MainDbContext())
+            {
+                try
+                {
+                    var bank = new Bank();
+                    bank.Address = bankAddressTextBox.Text;
+                    bank.Name=bankNameTextBox.Text;
+
+                    db.Add(bank);
+                    db.SaveChanges();
+                    BanksDataTableRefresh();
+                }
+                catch
+                {
+                    MessageBox.Show("Не удалось добавить элемент!");
+                }
+            }
+        }
+
+        private void banksDeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (mainGrid.SelectedIndex >= 0)
+            {
+                var selectedItem = (Bank)mainGrid.SelectedItem;
+                using (MainDbContext db = new MainDbContext())
+                {
+                    db.Remove(db.Banks.First(x => x.Id == selectedItem.Id));
+                    db.SaveChanges();
+                    BanksDataTableRefresh();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Вы не выбрали элемент");
+            }
+        }
+
+        private void BanksDataTableRefresh()
+        {
+            using (MainDbContext db = new MainDbContext())
+            {
+                var list = db.Banks.ToList();
+                var res = new ObservableCollection<Bank>();
+                foreach (var item in list)
+                {
+                    res.Add(item);
+                }
+                mainGrid.ItemsSource = res;
+                mainGrid.Columns[2].Visibility = Visibility.Collapsed;
+                mainGrid.Columns[4].Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void banksCleanButton_Click(object sender, RoutedEventArgs e)
+        {
+            bankAddressTextBox.Text = string.Empty;
+            bankNameTextBox.Text = string.Empty;
+        }
+
+        private void materialsCleanButton_Click(object sender, RoutedEventArgs e)
+        {
+            materialClassCodeTextBox.Text = string.Empty;
+            materialNameTextBox.Text = string.Empty;
+            materialGroupCodeTextBox.Text = string.Empty;
+            materialMeasurementUnitNameTextBox.Text = string.Empty;
+        }
+
+        private void materialsDeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (mainGrid.SelectedIndex >= 0)
+            {
+                var selectedItem = (MaterialEnchanced)mainGrid.SelectedItem;
+                using (MainDbContext db = new MainDbContext())
+                {
+                    db.Remove(db.Materials.First(x => x.Id == selectedItem.Id));
+                    db.SaveChanges();
+                    MaterialsDataTableRefresh();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Вы не выбрали элемент");
+            }
+        }
+
+        private void materialsAddButton_Click(object sender, RoutedEventArgs e)
+        {
+            using (MainDbContext db = new MainDbContext())
+            {
+                try
+                {
+                    var material = new Material();
+                    material.Name = materialNameTextBox.Text;
+                    material.ClassCode = int.Parse(materialClassCodeTextBox.Text);
+                    material.GroupCode = int.Parse(materialGroupCodeTextBox.Text);
+                    material.MeasurementUnitId = db.MeasurementUnits.First(x => x.UnitName == materialMeasurementUnitNameTextBox.Text).Id;
+
+                    db.Add(material);
+                    db.SaveChanges();
+                    MaterialsDataTableRefresh();
+                }
+                catch
+                {
+                    MessageBox.Show("Не удалось добавить элемент!");
+                }
+            }
+        }
+        private void MaterialsDataTableRefresh()
+        {
+            using (MainDbContext db = new MainDbContext())
+            {
+                var list = db.Materials.ToList();
+                var res = new ObservableCollection<MaterialEnchanced>();
+                foreach (var item in list)
+                {
+                    var tableItem = new MaterialEnchanced()
+                    {
+                        Id = item.Id,
+                        Name = item.Name,
+                        ClassCode = item.ClassCode,
+                        GroupCode = item.GroupCode,
+                        MeasurementUnitName = db.MeasurementUnits.First(x => x.Id == item.MeasurementUnitId).UnitName
+                    };
+                    res.Add(tableItem);
+                }
+                mainGrid.ItemsSource = res;
+            }
+        }
+        private void MeasurementUnitsDataTableRefresh()
+        {
+            using (MainDbContext db = new MainDbContext())
+            {
+                var list = db.MeasurementUnits.ToList();
+                mainGrid.ItemsSource = list;
+                mainGrid.Columns[1].Visibility = Visibility.Collapsed;
+                mainGrid.Columns[3].Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            using (MainDbContext db = new MainDbContext())
+            {
+                var result = db.StorageUnits.Join(db.Materials, u => u.MaterialId, c => c.Id, (u, c) => new { MaterialName = c.Name, MaterialSupplierId = u.MaterialSupplierId }).Join(db.MaterialSuppliers, m => m.MaterialSupplierId, v => v.Id, (m, v) => new { MaterialSupplierName = v.Name });
+                var list = result.Distinct().ToList();
+                otherGrid1.ItemsSource = list;
+                task1Res.Content = list.Count + " поставщиков";
+            }
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            using (MainDbContext db = new MainDbContext())
+            {
+                try
+                {
+                    var result = db.Banks.Where(x => x.Address == bankAddressToSuppliers.Text).Join(db.MaterialSuppliers, u => u.Id, c => c.BankId, (u, c) => new { MaterialSupplierName = c.Name }).Distinct().ToList().Count;
+                    task2Res.Content = result + " поставщиков";
+                }
+                catch
+                {
+                    MessageBox.Show("Нет банка с таким адресом!");
+                }
+
+            }
+            
+        }
     }
 
     public class StorageUnitEnhanced
@@ -243,6 +490,24 @@ namespace SummerPractice3
         public double UnitCost { get; set; }
         public string MaterialSupplierName { get; set; }
         public string MaterialName { get; set; }
+    }
+    public class SupplierEnchanced
+    {
+        public int Id { get; set; }
+        public int Code { get; set; }
+        public string Name { get; set; }
+        public ulong INN { get; set; }
+        public string BusinessAddress { get; set; }
+        public ulong BankAccount { get; set; }
+        public string BankName { get; set; }
+    }
+    public class MaterialEnchanced
+    {
+        public int Id { get; set; }
+        public int ClassCode { get; set; }
+        public int GroupCode { get; set; }
+        public string Name { get; set; }
+        public string MeasurementUnitName { get; set; }
     }
 }
 
