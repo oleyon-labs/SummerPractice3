@@ -19,9 +19,6 @@
 
 
                     <Label>Поиск поставщиков по материалу</Label>
-                    <!--<DataGrid Height="150" x:Name="suppliersGrid" AutoGenerateColumns="True" CanUserAddRows="False">
-
-                    </DataGrid>-->
                 </StackPanel>
             </TabItem>
             <TabItem x:Name="ordersTab" Header="Ордеры">

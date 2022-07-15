@@ -27,28 +27,9 @@ namespace SummerPractice3
         public MainWindow()
         {
             InitializeComponent();
-            //myButton.FontSize = 50;
-            //myButton.Content = "Hello there";
-
-            //myTextBlock.Text = "Hello from cs side!";
-            //myTextBlock.Foreground = Brushes.BlanchedAlmond;
-
-            //var codeBehindTB = new TextBlock();
-            //codeBehindTB.Text = "Hello world!";
-            //codeBehindTB.Inlines.Add(" This is added using Inlines!");
-            //codeBehindTB.Inlines.Add(new Run(" Run text that I added in Code behind")
-            //{
-            //    Foreground = Brushes.Red,
-            //    TextDecorations = TextDecorations.Underline
-            //});
-            //codeBehindTB.TextWrapping = TextWrapping.Wrap;
-
-
-            //this.Content = codeBehindTB;
         }
         private bool isOrderEditing = false;
         private int orderEditingId = -1;
-
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             var processInfo = new ProcessStartInfo(e.Uri.AbsoluteUri);
@@ -56,7 +37,6 @@ namespace SummerPractice3
             Process.Start(processInfo);
             e.Handled = true;
         }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             using (MainDbContext db = new MainDbContext())
@@ -75,8 +55,6 @@ namespace SummerPractice3
             }
 
         }
-
-
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             using (MainDbContext db = new MainDbContext())
@@ -86,7 +64,6 @@ namespace SummerPractice3
                 db.SaveChanges();
             }
         }
-
         private void ordersCleanButton_Click(object sender, RoutedEventArgs e)
         {
             isOrderEditing = false;
@@ -100,16 +77,15 @@ namespace SummerPractice3
             countTextBox.Text = "";
             unitCostTextBox.Text = "";
         }
-
         private void ordersDeleteButton_Click(object sender, RoutedEventArgs e)
         {
             if(mainGrid.SelectedIndex>=0)
             {
-                var selectedItem = mainGrid.SelectedItem;
+                var selectedItem = (StorageUnitEnhanced)mainGrid.SelectedItem;
                 using (MainDbContext db = new MainDbContext())
                 {
-                    db.Remove(selectedItem);
-                    mainGrid.Items.Remove(mainGrid.SelectedItem);
+                    db.Remove(db.StorageUnits.First(x => x.Id == selectedItem.Id));
+                    //mainGrid.Items.Remove(mainGrid.SelectedItem);
                     db.SaveChanges();
                     OrdersDataTableRefresh();
                 }
@@ -119,52 +95,62 @@ namespace SummerPractice3
                 MessageBox.Show("Вы не выбрали элемент");
             }
         }
-
-        //private void OrdersRefreshGrid()
-        //{
-        //    using (MainDbContext db = new MainDbContext())
-        //    {
-
-        //        var list = db.StorageUnits.ToList();
-        //        var materialSuppliers = new ObservableCollection<StorageUnit>();
-        //        foreach (var item in list)
-        //        {
-        //            materialSuppliers.Add(item);
-        //        }
-
-        //        mainGrid.ItemsSource = list;
-        //        mainGrid.Columns[0].Visibility = Visibility.Collapsed;
-        //    }
-        //}
-
         private void ordersModifyButton_Click(object sender, RoutedEventArgs e)
         {
             if (mainGrid.SelectedIndex >= 0)
             {
                 isOrderEditing = true;
-                var selectedItem = (StorageUnit)mainGrid.SelectedItem;
+                var selectedItem = (StorageUnitEnhanced)mainGrid.SelectedItem;
                 orderEditingId = selectedItem.Id;
 
-                //orderNumberTextBox.Text = selectedItem.OrderNumber;
-                supplierTextBox.Text = selectedItem.MaterialSupplier;
-                balanceAccountTextBox.Text = "";
-                accompanyingCodeTextBox.Text = "";
-                accompanyingNumberTextBox.Text = "";
-                materialTextBox.Text = "";
-                countTextBox.Text = "";
-                unitCostTextBox.Text = "";
+                orderNumberTextBox.Text = selectedItem.OrderNumber.ToString();
+                supplierTextBox.Text = selectedItem.MaterialSupplierName;
+                balanceAccountTextBox.Text = selectedItem.BalanceAccount.ToString();
+                accompanyingCodeTextBox.Text = selectedItem.AccompanyingDocumentCode.ToString();
+                accompanyingNumberTextBox.Text = selectedItem.AccompanyingDocumentNumber.ToString();
+                materialTextBox.Text = selectedItem.MaterialName;
+                countTextBox.Text = selectedItem.Count.ToString();
+                unitCostTextBox.Text = selectedItem.UnitCost.ToString();
             }
             else
             {
                 MessageBox.Show("Вы не выбрали элемент");
             }
         }
-
         private void ordersAddButton_Click(object sender, RoutedEventArgs e)
         {
-
+            using (MainDbContext db = new MainDbContext())
+            {
+                try
+                {
+                    StorageUnit storageUnit = new StorageUnit();
+                    if(isOrderEditing)
+                        storageUnit.Id = orderEditingId;
+                    storageUnit.OrderNumber = Int32.Parse(orderNumberTextBox.Text);
+                    storageUnit.Date = orderDatePicker.SelectedDate.Value;
+                    storageUnit.MaterialSupplierId = db.MaterialSuppliers.First((x) => x.Name == supplierTextBox.Text).Id;
+                    storageUnit.BalanceAccount = ulong.Parse(balanceAccountTextBox.Text);
+                    storageUnit.AccompanyingDocumentCode = int.Parse(accompanyingCodeTextBox.Text);
+                    storageUnit.AccompanyingDocumentNumber = int.Parse(accompanyingNumberTextBox.Text);
+                    storageUnit.MaterialId = db.Materials.First(x => x.Name == materialTextBox.Text).Id;
+                    storageUnit.Count = int.Parse(countTextBox.Text);
+                    storageUnit.UnitCost = double.Parse(unitCostTextBox.Text);
+                    if (isOrderEditing)
+                    {
+                        db.StorageUnits.Update(storageUnit);
+                        isOrderEditing = false;
+                    }
+                    else
+                        db.Add(storageUnit);
+                    db.SaveChanges();
+                    OrdersDataTableRefresh();
+                }
+                catch
+                {
+                    MessageBox.Show("Не удалось добавить элемент!");
+                }
+            }
         }
-
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             TabControl tabControl = sender as TabControl;
@@ -179,8 +165,7 @@ namespace SummerPractice3
                 SuppliersDataTableRefresh();
             }
         }
-
-        public void OrdersDataTableRefresh()
+        public void OrdersDataTableRefreshold()
         {
             using (MainDbContext db = new MainDbContext())
             {
@@ -190,6 +175,33 @@ namespace SummerPractice3
                 foreach (var item in list)
                 {
                     res.Add(item);
+                }
+                mainGrid.ItemsSource = res;
+            }
+        }
+        public void OrdersDataTableRefresh()
+        {
+            using (MainDbContext db = new MainDbContext())
+            {
+
+                var list = db.StorageUnits.ToList();
+                var res = new ObservableCollection<StorageUnitEnhanced>();
+                foreach (var item in list)
+                {
+                    var tableItem = new StorageUnitEnhanced()
+                    {
+                        AccompanyingDocumentCode = item.AccompanyingDocumentCode,
+                        AccompanyingDocumentNumber = item.AccompanyingDocumentNumber,
+                        Date = item.Date,
+                        Id = item.Id,
+                        OrderNumber = item.OrderNumber,
+                        Count=item.Count,
+                        UnitCost=item.UnitCost,
+                        BalanceAccount=item.BalanceAccount,
+                        MaterialName = db.Materials.First((x)=>x.Id==item.MaterialId).Name,
+                        MaterialSupplierName = db.MaterialSuppliers.First((x)=>x.Id==item.MaterialSupplierId).Name
+                    };
+                    res.Add(tableItem);
                 }
                 //label1.Content = suppliers[0].Name;
                 //ordersGrid.ItemsSource = res;
@@ -215,16 +227,8 @@ namespace SummerPractice3
             }
         }
 
-        //private void ordersGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-        //{
-        //    var item = (StorageUnit)ordersGrid.SelectedItem;
-        //    using (MainDbContext db = new MainDbContext())
-        //    {
 
-        //        db.StorageUnits.Update(item);
-        //        db.SaveChanges();
-        //    }
-        //}
+
     }
 
     public class StorageUnitEnhanced
