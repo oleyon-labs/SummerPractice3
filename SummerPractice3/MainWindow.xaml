@@ -11,141 +11,125 @@
         <TabControl SelectionChanged="TabControl_SelectionChanged">
             <TabItem x:Name="suppliersTab" Header="Поставщики">
                 <StackPanel>
-                    <StackPanel>
-                        <StackPanel>
-                            <WrapPanel>
-                                <StackPanel Margin="10">
-                                    <Label>Код</Label>
-                                    <TextBox Width="100" x:Name="supplierCodeTextBox"></TextBox>
-                                </StackPanel>
-                                <StackPanel Margin="10">
-                                    <Label>Название</Label>
-                                    <TextBox x:Name="supplierNameTextBox"></TextBox>
-                                </StackPanel>
-                                <StackPanel Margin="10">
-                                    <Label>ИНН</Label>
-                                    <TextBox Width="100" x:Name="supplierINNTextBox"></TextBox>
-                                </StackPanel>
-                                <StackPanel Margin="10">
-                                    <Label>Бизнес адрес</Label>
-                                    <TextBox Width="100" x:Name="supplierAddressTextBox"></TextBox>
-                                </StackPanel>
-                                <StackPanel Margin="10">
-                                    <Label>Номер Банковского счета</Label>
-                                    <TextBox Width="100" x:Name="supplierBankAccountTextBox"></TextBox>
-                                </StackPanel>
-                                <StackPanel Margin="10">
-                                    <Label>Название банка</Label>
-                                    <TextBox Width="100" x:Name="supplierBankName"></TextBox>
-                                </StackPanel>
-                                
-
-                            </WrapPanel>
-                            <Button Height="30" x:Name="supplierCleanButton" Click="supplierCleanButton_Click">Очистить</Button>
-                            <Button Height="30" x:Name="supplierDeleteButton" Click="supplierDeleteButton_Click">Удалить</Button>
-                            <Button Height="30" x:Name="supplierModifyButton" Click="supplierModifyButton_Click">Изменить</Button>
-                            <Button Height="30" x:Name="supplierAddButton" Click="supplierAddButton_Click">Добавить</Button>
+                    <WrapPanel>
+                        <StackPanel Margin="10">
+                            <Label>Код</Label>
+                            <TextBox Width="100" x:Name="supplierCodeTextBox"></TextBox>
                         </StackPanel>
-                    </StackPanel>
+                        <StackPanel Margin="10">
+                            <Label>Название</Label>
+                            <TextBox x:Name="supplierNameTextBox"></TextBox>
+                        </StackPanel>
+                        <StackPanel Margin="10">
+                            <Label>ИНН</Label>
+                            <TextBox Width="100" x:Name="supplierINNTextBox"></TextBox>
+                        </StackPanel>
+                        <StackPanel Margin="10">
+                            <Label>Бизнес адрес</Label>
+                            <TextBox Width="100" x:Name="supplierAddressTextBox"></TextBox>
+                        </StackPanel>
+                        <StackPanel Margin="10">
+                            <Label>Номер Банковского счета</Label>
+                            <TextBox Width="100" x:Name="supplierBankAccountTextBox"></TextBox>
+                        </StackPanel>
+                        <StackPanel Margin="10">
+                            <Label>Название банка</Label>
+                            <TextBox Width="100" x:Name="supplierBankName"></TextBox>
+                        </StackPanel>
+                    </WrapPanel>
+                    <Button Height="30" x:Name="supplierCleanButton" Click="supplierCleanButton_Click">Очистить</Button>
+                    <Button Height="30" x:Name="supplierDeleteButton" Click="supplierDeleteButton_Click">Удалить</Button>
+                    <Button Height="30" x:Name="supplierModifyButton" Click="supplierModifyButton_Click">Изменить</Button>
+                    <Button Height="30" x:Name="supplierAddButton" Click="supplierAddButton_Click">Добавить</Button>
                 </StackPanel>
             </TabItem>
             <TabItem x:Name="ordersTab" Header="Ордеры">
                 <StackPanel>
-                    <StackPanel>
-                        <WrapPanel>
-                            <StackPanel Margin="10">
-                                <Label>Номер ордера</Label>
-                                <TextBox Width="100" x:Name="orderNumberTextBox"></TextBox>
-                            </StackPanel>
-                            <StackPanel Margin="10">
-                                <Label>Дата</Label>
-                                <DatePicker x:Name="orderDatePicker"></DatePicker>
-                            </StackPanel>
-                            <StackPanel Margin="10">
-                                <Label>Поставщик</Label>
-                                <TextBox Width="100" x:Name="supplierTextBox"></TextBox>
-                            </StackPanel>
-                            <StackPanel Margin="10">
-                                <Label>Балансный счет</Label>
-                                <TextBox Width="100" x:Name="balanceAccountTextBox"></TextBox>
-                            </StackPanel>
-                            <StackPanel Margin="10">
-                                <Label>Код сопроводительного документа</Label>
-                                <TextBox Width="100" x:Name="accompanyingCodeTextBox"></TextBox>
-                            </StackPanel>
-                            <StackPanel Margin="10">
-                                <Label>Номер сопроводительного документа</Label>
-                                <TextBox Width="100" x:Name="accompanyingNumberTextBox"></TextBox>
-                            </StackPanel>
-                            <StackPanel Margin="10">
-                                <Label>Материал</Label>
-                                <TextBox Width="100" x:Name="materialTextBox"></TextBox>
-                            </StackPanel>
-                            <StackPanel Margin="10">
-                                <Label>Количество</Label>
-                                <TextBox Width="100" x:Name="countTextBox"></TextBox>
-                            </StackPanel>
-                            <StackPanel Margin="10">
-                                <Label>Стоимость за единицу</Label>
-                                <TextBox Width="100" x:Name="unitCostTextBox"></TextBox>
-                            </StackPanel>
+                    <WrapPanel>
+                        <StackPanel Margin="10">
+                            <Label>Номер ордера</Label>
+                            <TextBox Width="100" x:Name="orderNumberTextBox"></TextBox>
+                        </StackPanel>
+                        <StackPanel Margin="10">
+                            <Label>Дата</Label>
+                            <DatePicker x:Name="orderDatePicker"></DatePicker>
+                        </StackPanel>
+                        <StackPanel Margin="10">
+                            <Label>Поставщик</Label>
+                            <TextBox Width="100" x:Name="supplierTextBox"></TextBox>
+                        </StackPanel>
+                        <StackPanel Margin="10">
+                            <Label>Балансный счет</Label>
+                            <TextBox Width="100" x:Name="balanceAccountTextBox"></TextBox>
+                        </StackPanel>
+                        <StackPanel Margin="10">
+                            <Label>Код сопроводительного документа</Label>
+                            <TextBox Width="100" x:Name="accompanyingCodeTextBox"></TextBox>
+                        </StackPanel>
+                        <StackPanel Margin="10">
+                            <Label>Номер сопроводительного документа</Label>
+                            <TextBox Width="100" x:Name="accompanyingNumberTextBox"></TextBox>
+                        </StackPanel>
+                        <StackPanel Margin="10">
+                            <Label>Материал</Label>
+                            <TextBox Width="100" x:Name="materialTextBox"></TextBox>
+                        </StackPanel>
+                        <StackPanel Margin="10">
+                            <Label>Количество</Label>
+                            <TextBox Width="100" x:Name="countTextBox"></TextBox>
+                        </StackPanel>
+                        <StackPanel Margin="10">
+                            <Label>Стоимость за единицу</Label>
+                            <TextBox Width="100" x:Name="unitCostTextBox"></TextBox>
+                        </StackPanel>
 
-                        </WrapPanel>
-                        <Button Height="30" x:Name="ordersCleanButton" Click="ordersCleanButton_Click">Очистить</Button>
-                        <Button Height="30" x:Name="ordersDeleteButton" Click="ordersDeleteButton_Click">Удалить</Button>
-                        <Button Height="30" x:Name="ordersModifyButton" Click="ordersModifyButton_Click">Изменить</Button>
-                        <Button Height="30" x:Name="ordersAddButton" Click="ordersAddButton_Click">Добавить</Button>
-                    </StackPanel>
+                    </WrapPanel>
+                    <Button Height="30" x:Name="ordersCleanButton" Click="ordersCleanButton_Click">Очистить</Button>
+                    <Button Height="30" x:Name="ordersDeleteButton" Click="ordersDeleteButton_Click">Удалить</Button>
+                    <Button Height="30" x:Name="ordersModifyButton" Click="ordersModifyButton_Click">Изменить</Button>
+                    <Button Height="30" x:Name="ordersAddButton" Click="ordersAddButton_Click">Добавить</Button>
                 </StackPanel>
             </TabItem>
             <TabItem x:Name="banksTab" Header="Банки">
                 <StackPanel>
-                    <StackPanel>
-                        <StackPanel>
-                            <WrapPanel>
-                                <StackPanel Margin="10">
-                                    <Label>Название</Label>
-                                    <TextBox Width="100" x:Name="bankNameTextBox"></TextBox>
-                                </StackPanel>
-                                <StackPanel Margin="10">
-                                    <Label>Адрес</Label>
-                                    <TextBox x:Name="bankAddressTextBox"></TextBox>
-                                </StackPanel>
-                            </WrapPanel>
-                            <Button Height="30" x:Name="banksCleanButton" Click="banksCleanButton_Click">Очистить</Button>
-                            <Button Height="30" x:Name="banksDeleteButton" Click="banksDeleteButton_Click">Удалить</Button>
-                            <Button Height="30" x:Name="banksAddButton" Click="banksAddButton_Click">Добавить</Button>
+                    <WrapPanel>
+                        <StackPanel Margin="10">
+                            <Label>Название</Label>
+                            <TextBox Width="100" x:Name="bankNameTextBox"></TextBox>
                         </StackPanel>
-                    </StackPanel>
+                        <StackPanel Margin="10">
+                            <Label>Адрес</Label>
+                            <TextBox x:Name="bankAddressTextBox"></TextBox>
+                        </StackPanel>
+                    </WrapPanel>
+                    <Button Height="30" x:Name="banksCleanButton" Click="banksCleanButton_Click">Очистить</Button>
+                    <Button Height="30" x:Name="banksDeleteButton" Click="banksDeleteButton_Click">Удалить</Button>
+                    <Button Height="30" x:Name="banksAddButton" Click="banksAddButton_Click">Добавить</Button>
                 </StackPanel>
             </TabItem>
             <TabItem x:Name="materialsTab" Header="Материалы">
                 <StackPanel>
-                    <StackPanel>
-                        <StackPanel>
-                            <WrapPanel>
-                                <StackPanel Margin="10">
-                                    <Label>Код класса</Label>
-                                    <TextBox Width="100" x:Name="materialClassCodeTextBox"></TextBox>
-                                </StackPanel>
-                                <StackPanel Margin="10">
-                                    <Label>Код группы</Label>
-                                    <TextBox x:Name="materialGroupCodeTextBox"></TextBox>
-                                </StackPanel>
-                                <StackPanel Margin="10">
-                                    <Label>Название</Label>
-                                    <TextBox x:Name="materialNameTextBox"></TextBox>
-                                </StackPanel>
-                                <StackPanel Margin="10">
-                                    <Label>Единица измерения</Label>
-                                    <TextBox x:Name="materialMeasurementUnitNameTextBox"></TextBox>
-                                </StackPanel>
-                            </WrapPanel>
-                            <Button Height="30" x:Name="materialsCleanButton" Click="materialsCleanButton_Click">Очистить</Button>
-                            <Button Height="30" x:Name="materialsDeleteButton" Click="materialsDeleteButton_Click">Удалить</Button>
-                            <Button Height="30" x:Name="materialsAddButton" Click="materialsAddButton_Click">Добавить</Button>
+                    <WrapPanel>
+                        <StackPanel Margin="10">
+                            <Label>Код класса</Label>
+                            <TextBox Width="100" x:Name="materialClassCodeTextBox"></TextBox>
                         </StackPanel>
-                    </StackPanel>
+                        <StackPanel Margin="10">
+                            <Label>Код группы</Label>
+                            <TextBox x:Name="materialGroupCodeTextBox"></TextBox>
+                        </StackPanel>
+                        <StackPanel Margin="10">
+                            <Label>Название</Label>
+                            <TextBox x:Name="materialNameTextBox"></TextBox>
+                        </StackPanel>
+                        <StackPanel Margin="10">
+                            <Label>Единица измерения</Label>
+                            <TextBox x:Name="materialMeasurementUnitNameTextBox"></TextBox>
+                        </StackPanel>
+                    </WrapPanel>
+                    <Button Height="30" x:Name="materialsCleanButton" Click="materialsCleanButton_Click">Очистить</Button>
+                    <Button Height="30" x:Name="materialsDeleteButton" Click="materialsDeleteButton_Click">Удалить</Button>
+                    <Button Height="30" x:Name="materialsAddButton" Click="materialsAddButton_Click">Добавить</Button>
                 </StackPanel>
             </TabItem>
             <TabItem x:Name="other" Header="Прочее">
@@ -165,11 +149,8 @@
                     </WrapPanel>
                     <Label HorizontalAlignment="Center">Список единиц измерения</Label>
                 </StackPanel>
-
             </TabItem>
         </TabControl>
-        <DataGrid Height="150" x:Name="mainGrid" AutoGenerateColumns="True" CanUserAddRows="False">
-
-        </DataGrid>
+        <DataGrid Height="150" x:Name="mainGrid" AutoGenerateColumns="True" CanUserAddRows="False"></DataGrid>
     </StackPanel>
 </Window>
